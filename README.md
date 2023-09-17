@@ -51,6 +51,14 @@ $ yarn run test:cov
 4. Preparei endpoint para retornar status da api, conexão com bd, tempo online e uso da memória pela aplicação.
 5. Preparei o endpoint para consulta de um produto pelo seu código.
 6. Preparei o endpoint para delete deum produto.
+7. Desenvolvi o endpoint para atualização de produto pelo cliente.
+
+//FALTA
+CRON //METODO PARA COMPARAR SITUAÇÃO ATUAL E SALVAR SE HOUVER ALTERAÇÃO - CONFIGURAR CRON
+CRON //SALVAR A HORA DO ULTIMO CRON - CRIAR SCHEMA E MÉTODO DE CRIAR E FIND
+TESTE UNI PUT AND GET
+API KEY
+PREPARAR DOCKER-COMPOSE PARA PRODUÇAO
 
 ## License
 

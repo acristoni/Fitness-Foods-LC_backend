@@ -5,12 +5,14 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ProductDTO } from './dto/product.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Product } from './models/products.schema';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @ApiTags('Alimentos')
 @Controller()
@@ -62,5 +64,16 @@ export class AppController {
   })
   async delete(@Param('code') code: number): Promise<string> {
     return await this.appService.delete(code);
+  }
+
+  @Put('products/:code')
+  @ApiOperation({
+    summary: 'Será responsável por receber atualizações do Projeto Web.',
+  })
+  async updateByClient(
+    @Param('code') code: number,
+    @Body() updatedData: UpdateProductDto,
+  ): Promise<Product> {
+    return await this.appService.updateByClient(code, updatedData);
   }
 }

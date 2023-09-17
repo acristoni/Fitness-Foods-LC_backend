@@ -11,6 +11,7 @@ import axios from 'axios';
 import * as zlib from 'zlib';
 import { ProductDTO } from './dto/product.dto';
 import { Status } from './enums/status.enum';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @Injectable()
 export class AppService {
@@ -191,6 +192,17 @@ export class AppService {
       foundProduct.status = Status.TRASH;
       await foundProduct.save();
       return `Produto ${foundProduct.product_name} excluído com sucesso!`;
+    } catch (err) {
+      throw new InternalServerErrorException(err);
+    }
+  }
+
+  async updateByClient(code: number, updateProductDto: UpdateProductDto) {
+    const foundProduct = await this.getProductByCode(code);
+
+    try {
+      Object.assign(foundProduct, updateProductDto);
+      return await foundProduct.save();
     } catch (err) {
       throw new InternalServerErrorException(err);
     }
