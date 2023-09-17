@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ProductDTO } from './dto/product.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Product } from './models/products.schema';
 
 @ApiTags('Alimentos')
 @Controller()
@@ -29,7 +30,7 @@ export class AppController {
 
   @Get('products')
   @ApiOperation({
-    summary: 'Lista todos os produtos da base de dados, com paginação',
+    summary: 'Listar todos os produtos da base de dados, com paginação',
   })
   async findAll(
     @Query('page') page: number = 1,
@@ -37,5 +38,13 @@ export class AppController {
   ) {
     const products = await this.appService.findAll(page, limit);
     return products;
+  }
+
+  @Get('products/:code')
+  @ApiOperation({
+    summary: 'Obter a informação somente de um produto da base de dados.',
+  })
+  async findOne(@Param('code') code: number): Promise<Product> {
+    return await this.appService.getProductByCode(code);
   }
 }

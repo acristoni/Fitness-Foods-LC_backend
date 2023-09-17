@@ -49,6 +49,7 @@ $ yarn run test:cov
 2. Preparei os métodos para baixar os dados das listas, convertê-los para um objeto e salvá-los no modelo requerido. 
 3. Preparei endpoint para consulta de todos os produtos salvos, com paginação. E configurei o Swagger para documentar a API pelo modelo da OpenAPI.
 4. Preparei endpoint para retornar status da api, conexão com bd, tempo online e uso da memória pela aplicação.
+5. Preparei o endpoint para consulta de um produto pelo seu código
 
 ## License
 

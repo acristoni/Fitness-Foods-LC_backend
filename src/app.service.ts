@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Product } from './models/products.schema';
@@ -157,5 +161,25 @@ export class AppService {
     return `API, conexão leitura e escritura com a base de dados está OK, uso de memória por parte da aplicação é de ${toMB(
       appMemory,
     )} MB, está online a ${Math.floor(uptimeInSeconds)} segundos`;
+  }
+
+  async getProductByCode(code) {
+    try {
+      const produtoEncontrado = await this.productModel
+        .findOne({ code: code })
+        .exec();
+
+      if (produtoEncontrado) {
+        return produtoEncontrado;
+      } else {
+        throw new NotFoundException(
+          'Produto não encontrado para o código informado',
+        );
+      }
+    } catch (error) {
+      throw new NotFoundException(
+        'Produto não encontrado para o código informado',
+      );
+    }
   }
 }
