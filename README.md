@@ -62,6 +62,7 @@ $ yarn run test:cov
 
 1. Configurei o MongoDB Atlas, assim como o projeto NestJs, para poder interagir com a coleção responsável por persistir os dados.
 2. Preparei os métodos para baixar os dados das listas, convertê-los para um objeto e salvá-los no modelo requerido. 
+3. Preparei endpoint para consulta de todos os produtos salvos, com paginação. E configurei o Swagger para documentar a API pelo modelo da OpenAPI.
 
 ## Stay in touch
 
