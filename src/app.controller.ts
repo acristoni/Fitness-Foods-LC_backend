@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 import { ProductDTO } from './dto/product.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -46,5 +54,13 @@ export class AppController {
   })
   async findOne(@Param('code') code: number): Promise<Product> {
     return await this.appService.getProductByCode(code);
+  }
+
+  @Delete('products/:code')
+  @ApiOperation({
+    summary: 'Mudar o status do produto para trash.',
+  })
+  async delete(@Param('code') code: number): Promise<string> {
+    return await this.appService.delete(code);
   }
 }

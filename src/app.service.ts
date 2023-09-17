@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -163,7 +164,7 @@ export class AppService {
     )} MB, está online a ${Math.floor(uptimeInSeconds)} segundos`;
   }
 
-  async getProductByCode(code) {
+  async getProductByCode(code: number): Promise<Product> {
     try {
       const produtoEncontrado = await this.productModel
         .findOne({ code: code })
@@ -180,6 +181,18 @@ export class AppService {
       throw new NotFoundException(
         'Produto não encontrado para o código informado',
       );
+    }
+  }
+
+  async delete(code: number): Promise<string> {
+    const foundProduct = await this.getProductByCode(code);
+
+    try {
+      foundProduct.status = Status.TRASH;
+      await foundProduct.save();
+      return `Produto ${foundProduct.product_name} excluído com sucesso!`;
+    } catch (err) {
+      throw new InternalServerErrorException(err);
     }
   }
 }
