@@ -5,10 +5,11 @@ export class UpdateProductDto {
   @ApiProperty({
     type: 'enum',
     enum: Status,
-    default: Status.DRAFT,
-    example: Status.DRAFT,
-    description: 'Status do produto',
-    required: false,
+    default: Status.PUBLISHED,
+    example: Status.PUBLISHED,
+    description:
+      'Status do produto a ser editado, é por padrão "published", pois com esse status o produto não é mais atualizado pela rotina diária, uma vez que o clinete assumiu a responsabilidade na atualização',
+    required: true,
   })
   status?: Status;
 

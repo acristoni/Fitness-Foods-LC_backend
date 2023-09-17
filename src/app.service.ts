@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Injectable,
   InternalServerErrorException,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -12,12 +13,26 @@ import * as zlib from 'zlib';
 import { ProductDTO } from './dto/product.dto';
 import { Status } from './enums/status.enum';
 import { UpdateProductDto } from './dto/update-product.dto';
+import * as cron from 'node-cron';
 
 @Injectable()
 export class AppService {
+  private readonly logger = new Logger(AppService.name);
+
   constructor(
     @InjectModel(Product.name) private readonly productModel: Model<Product>,
-  ) {}
+  ) {
+    cron.schedule(
+      '00 03 * * *', // agendamento para salvar no bd as 03 da manhã diariamente
+      () => {
+        this.updateAllLists();
+      },
+      {
+        scheduled: true,
+        timezone: 'America/Sao_Paulo',
+      },
+    );
+  }
 
   async findAll(page: number, limit: number) {
     if (page < 1) {
@@ -39,6 +54,55 @@ export class AppService {
       limit,
       totalProducts,
     };
+  }
+
+  async updateProductByCron(productDTO: ProductDTO): Promise<Product> {
+    let product = await this.getProductByCode(
+      parseInt(productDTO.code.substring(1, 14)),
+      false,
+    );
+
+    if (!product) {
+      product = new this.productModel();
+      product.code = parseInt(productDTO.code.substring(1, 14));
+      product.status = Status.DRAFT;
+      product.imported_t = new Date();
+    }
+
+    if (product.status === 'published') {
+      return product;
+    }
+
+    product.url = productDTO.url;
+    product.creator = productDTO.creator;
+    product.created_t = new Date(productDTO.created_datetime);
+    product.last_modified_t = new Date(productDTO.last_modified_datetime);
+    product.product_name = productDTO.product_name;
+    product.quantity = productDTO.quantity;
+    product.brands = productDTO.brands;
+    product.categories = productDTO.categories;
+    product.labels = productDTO.labels;
+    product.cities = productDTO.cities;
+    product.purchase_places = productDTO.purchase_places;
+    product.stores = productDTO.stores;
+    product.ingredients_text = productDTO.ingredients_text;
+    product.traces = productDTO.traces;
+    product.serving_size = productDTO.serving_size;
+    product.serving_quantity = Number.isNaN(
+      parseInt(productDTO.serving_quantity),
+    )
+      ? 0
+      : parseInt(productDTO.serving_quantity);
+    product.nutriscore_score = Number.isNaN(
+      parseInt(productDTO.nutriscore_score),
+    )
+      ? 0
+      : parseInt(productDTO.nutriscore_score);
+    product.nutriscore_grade = productDTO.nutriscore_grade;
+    product.main_category = productDTO.main_category;
+    product.image_url = productDTO.image_url;
+
+    return await product.save();
   }
 
   async createProduct(productDTO: ProductDTO): Promise<Product> {
@@ -139,6 +203,29 @@ export class AppService {
     return `Produtos da lista 0${listNumber} salvos com sucesso`;
   }
 
+  async updateProductsFromList(listNumber: number): Promise<string> {
+    let string = '';
+    const array = await this.importData(listNumber);
+    array.forEach((line) => {
+      string = string + line;
+    });
+    const arrayStrings = string.split('}');
+    const arrayObj: ProductDTO[] = [];
+    for (let i = 0; i < 100; i++) {
+      const facts = arrayStrings[i];
+      const factsObj = JSON.parse(facts + '}');
+      arrayObj.push(factsObj);
+    }
+
+    const promises = arrayObj.map(async (productInfo: ProductDTO) => {
+      return await this.updateProductByCron(productInfo);
+    });
+
+    await Promise.all(promises);
+
+    return `Produtos da lista 0${listNumber} atualizados com sucesso`;
+  }
+
   async importAllLists() {
     const arrayListsNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -149,6 +236,21 @@ export class AppService {
     const arraySuccessMessage = await Promise.all(promises);
 
     return arraySuccessMessage;
+  }
+
+  async updateAllLists() {
+    console.time('Tempo para realizar');
+    this.logger.log('Iniciando atualização diária dos dados em rascunho');
+    const arrayListsNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+    const promises = arrayListsNumbers.map(async (listNumber: number) => {
+      return await this.updateProductsFromList(listNumber);
+    });
+
+    await Promise.all(promises);
+
+    this.logger.log('Dados diários atualizados');
+    console.timeEnd('Tempo para realizar');
   }
 
   getHello(): string {
@@ -165,7 +267,7 @@ export class AppService {
     )} MB, está online a ${Math.floor(uptimeInSeconds)} segundos`;
   }
 
-  async getProductByCode(code: number): Promise<Product> {
+  async getProductByCode(code: number, throwError = true): Promise<Product> {
     try {
       const produtoEncontrado = await this.productModel
         .findOne({ code: code })
@@ -174,14 +276,22 @@ export class AppService {
       if (produtoEncontrado) {
         return produtoEncontrado;
       } else {
+        if (throwError) {
+          throw new NotFoundException(
+            'Produto não encontrado para o código informado',
+          );
+        } else {
+          return null;
+        }
+      }
+    } catch (error) {
+      if (throwError) {
         throw new NotFoundException(
           'Produto não encontrado para o código informado',
         );
+      } else {
+        return null;
       }
-    } catch (error) {
-      throw new NotFoundException(
-        'Produto não encontrado para o código informado',
-      );
     }
   }
 

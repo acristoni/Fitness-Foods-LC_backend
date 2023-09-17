@@ -52,9 +52,9 @@ $ yarn run test:cov
 5. Preparei o endpoint para consulta de um produto pelo seu código.
 6. Preparei o endpoint para delete deum produto.
 7. Desenvolvi o endpoint para atualização de produto pelo cliente.
+8. Preparei os métodos para atualizar e configurei o CRON da aplicação.
 
 //FALTA
-CRON //METODO PARA COMPARAR SITUAÇÃO ATUAL E SALVAR SE HOUVER ALTERAÇÃO - CONFIGURAR CRON
 CRON //SALVAR A HORA DO ULTIMO CRON - CRIAR SCHEMA E MÉTODO DE CRIAR E FIND
 TESTE UNI PUT AND GET
 API KEY

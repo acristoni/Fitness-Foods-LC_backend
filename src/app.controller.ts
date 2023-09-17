@@ -4,12 +4,10 @@ import {
   Delete,
   Get,
   Param,
-  Post,
   Put,
   Query,
 } from '@nestjs/common';
 import { AppService } from './app.service';
-import { ProductDTO } from './dto/product.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Product } from './models/products.schema';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -31,11 +29,6 @@ export class AppController {
   @Get('importar')
   async importDataFromUrl() {
     return await this.appService.importAllLists();
-  }
-
-  @Post('importar')
-  async createProduct(@Body() productDTO: ProductDTO) {
-    return await this.appService.createProduct(productDTO);
   }
 
   @Get('products')
