@@ -146,6 +146,16 @@ export class AppService {
   }
 
   getHello(): string {
-    return 'Hello World!';
+    const memoryUsage = process.memoryUsage();
+    const uptimeInSeconds = process.uptime();
+
+    const appMemory =
+      memoryUsage.heapTotal + memoryUsage.external + memoryUsage.arrayBuffers;
+
+    const toMB = (bytes) => (bytes / 1024 / 1024).toFixed(2);
+
+    return `API, conexão leitura e escritura com a base de dados está OK, uso de memória por parte da aplicação é de ${toMB(
+      appMemory,
+    )} MB, está online a ${Math.floor(uptimeInSeconds)} segundos`;
   }
 }

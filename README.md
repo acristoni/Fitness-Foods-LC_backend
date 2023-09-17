@@ -63,6 +63,7 @@ $ yarn run test:cov
 1. Configurei o MongoDB Atlas, assim como o projeto NestJs, para poder interagir com a coleção responsável por persistir os dados.
 2. Preparei os métodos para baixar os dados das listas, convertê-los para um objeto e salvá-los no modelo requerido. 
 3. Preparei endpoint para consulta de todos os produtos salvos, com paginação. E configurei o Swagger para documentar a API pelo modelo da OpenAPI.
+4. Preparei endpoint para retornar status da api, conexão com bd, tempo online e uso da memória pela aplicação.
 
 ## Stay in touch
 
@@ -73,3 +74,5 @@ $ yarn run test:cov
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+### This is a challenge by Coodesh
