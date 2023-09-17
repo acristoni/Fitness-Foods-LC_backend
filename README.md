@@ -58,9 +58,11 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 
-## Support
+## Passos do desenvolvimento
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+1. Configurei o MongoDB Atlas, assim como o projeto NestJs, para poder interagir com a coleção responsável por persistir os dados.
+2. Preparei os métodos para baixar os dados das listas, convertê-los para um objeto e salvá-los no modelo requerido. 
+3. Preparei endpoint para consulta de todos os produtos salvos, com paginação. E configurei o Swagger para documentar a API pelo modelo da OpenAPI.
 
 ## Stay in touch
 
