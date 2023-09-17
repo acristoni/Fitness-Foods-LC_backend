@@ -22,8 +22,8 @@ export class AppController {
     summary:
       'Detalhes da API, se conexão leitura e escritura com a base de dados está OK, horário da última vez que o CRON foi executado, tempo online e uso de memória.',
   })
-  getHello(): string {
-    return this.appService.getHello();
+  async getHello(): Promise<string> {
+    return await this.appService.getHello();
   }
 
   @Get('importar')

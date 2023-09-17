@@ -14,6 +14,7 @@ import { ProductDTO } from './dto/product.dto';
 import { Status } from './enums/status.enum';
 import { UpdateProductDto } from './dto/update-product.dto';
 import * as cron from 'node-cron';
+import { Process } from './models/process.schema copy';
 
 @Injectable()
 export class AppService {
@@ -21,10 +22,12 @@ export class AppService {
 
   constructor(
     @InjectModel(Product.name) private readonly productModel: Model<Product>,
+    @InjectModel(Process.name) private readonly processModel: Model<Process>,
   ) {
     cron.schedule(
-      '00 03 * * *', // agendamento para salvar no bd as 03 da manhã diariamente
+      '11 15 * * *', // agendamento para salvar no bd as 03 da manhã diariamente
       () => {
+        this.saveProcess();
         this.updateAllLists();
       },
       {
@@ -32,6 +35,27 @@ export class AppService {
         timezone: 'America/Sao_Paulo',
       },
     );
+  }
+
+  async saveProcess() {
+    try {
+      const newProcess = new this.processModel();
+
+      newProcess.process_name = 'CRON';
+      newProcess.date = new Date();
+
+      return newProcess.save();
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async getLastProcess() {
+    try {
+      return await this.processModel.findOne({}).sort({ date: -1 }).exec();
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
   async findAll(page: number, limit: number) {
@@ -253,10 +277,10 @@ export class AppService {
     console.timeEnd('Tempo para realizar');
   }
 
-  getHello(): string {
+  async getHello(): Promise<string> {
     const memoryUsage = process.memoryUsage();
     const uptimeInSeconds = process.uptime();
-
+    const lastProcess = await this.getLastProcess();
     const appMemory =
       memoryUsage.heapTotal + memoryUsage.external + memoryUsage.arrayBuffers;
 
@@ -264,7 +288,11 @@ export class AppService {
 
     return `API, conexão leitura e escritura com a base de dados está OK, uso de memória por parte da aplicação é de ${toMB(
       appMemory,
-    )} MB, está online a ${Math.floor(uptimeInSeconds)} segundos`;
+    )} MB, está online a ${Math.floor(
+      uptimeInSeconds,
+    )} segundos e o horário da última vez que o CRON foi executado: ${
+      lastProcess.date
+    }`;
   }
 
   async getProductByCode(code: number, throwError = true): Promise<Product> {

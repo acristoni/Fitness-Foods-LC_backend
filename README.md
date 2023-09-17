@@ -53,9 +53,9 @@ $ yarn run test:cov
 6. Preparei o endpoint para delete deum produto.
 7. Desenvolvi o endpoint para atualização de produto pelo cliente.
 8. Preparei os métodos para atualizar e configurei o CRON da aplicação.
+9. Criada collection para salvar quando os processos da aplicação acontecem e métodos para salvar o horário do CRON e refatoração do endpoint de estado da api para trazer a informação do horpario do último CRON
 
 //FALTA
-CRON //SALVAR A HORA DO ULTIMO CRON - CRIAR SCHEMA E MÉTODO DE CRIAR E FIND
 TESTE UNI PUT AND GET
 API KEY
 PREPARAR DOCKER-COMPOSE PARA PRODUÇAO
