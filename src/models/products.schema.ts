@@ -19,10 +19,10 @@ export class Product extends Document {
   creator: string;
 
   @Prop()
-  created_t: number;
+  created_t: Date;
 
   @Prop()
-  last_modified_t: number;
+  last_modified_t: Date;
 
   @Prop()
   product_name: string;

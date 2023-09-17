@@ -3,24 +3,16 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Product, ProductSchema } from './models/products.schema';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import mongooseConfig from './config/mongoose.config';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true, // Carregue a configuração globalmente
-      load: [mongooseConfig], // Carregue a configuração do Mongoose
+      isGlobal: true,
     }),
-    MongooseModule.forRootAsync({
-      useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>('mongoose.uri'),
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      }),
-      inject: [ConfigService],
-      imports: undefined,
-    }),
+    MongooseModule.forRoot(
+      'mongodb+srv://adonaicristoni:bM3mCWyNSaYO0S8K@cluster0.xknuut5.mongodb.net/?retryWrites=true&w=majority',
+    ),
     MongooseModule.forFeature([{ name: Product.name, schema: ProductSchema }]),
   ],
   controllers: [AppController],
