@@ -54,6 +54,7 @@ $ yarn run test:cov
 7. Desenvolvi o endpoint para atualização de produto pelo cliente.
 8. Preparei os métodos para atualizar e configurei o CRON da aplicação.
 9. Criada collection para salvar quando os processos da aplicação acontecem e métodos para salvar o horário do CRON e refatoração do endpoint de estado da api para trazer a informação do horpario do último CRON
+10. Teste GET na raiz.
 
 //FALTA
 TESTE UNI PUT AND GET

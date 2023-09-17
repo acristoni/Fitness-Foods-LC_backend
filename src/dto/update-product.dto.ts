@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Status } from 'src/enums/status.enum';
+import { Status } from '../enums/status.enum';
 
 export class UpdateProductDto {
   @ApiProperty({

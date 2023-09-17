@@ -281,8 +281,13 @@ export class AppService {
     const memoryUsage = process.memoryUsage();
     const uptimeInSeconds = process.uptime();
     const lastProcess = await this.getLastProcess();
+
     const appMemory =
       memoryUsage.heapTotal + memoryUsage.external + memoryUsage.arrayBuffers;
+    console.log(
+      '🚀 ~ file: app.service.ts:297 ~ getHello ~ appMemory:',
+      appMemory,
+    );
 
     const toMB = (bytes) => (bytes / 1024 / 1024).toFixed(2);
 
