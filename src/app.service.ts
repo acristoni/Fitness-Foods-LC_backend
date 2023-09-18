@@ -306,7 +306,10 @@ export class AppService {
     }
   }
 
-  async updateByClient(code: number, updateProductDto: UpdateProductDto) {
+  async updateByClient(
+    code: number,
+    updateProductDto: UpdateProductDto,
+  ): Promise<Product> {
     const foundProduct = await this.getProductByCode(code);
 
     try {

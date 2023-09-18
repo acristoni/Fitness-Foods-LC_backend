@@ -1,4 +1,4 @@
-const ProductMock = {
+const ProductMockCantSave = {
   _id: '65073771388b42271cea072a',
   code: 411476010205,
   status: 'published',
@@ -24,7 +24,7 @@ const ProductMock = {
   main_category: 'pescado',
   image_url: 'https://imagem.com.br/',
   __v: 0,
-  save: jest.fn().mockResolvedValue({}),
+  save: jest.fn().mockRejectedValue(null),
 };
 
-export default ProductMock;
+export default ProductMockCantSave;
