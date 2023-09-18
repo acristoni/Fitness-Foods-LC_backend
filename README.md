@@ -29,16 +29,10 @@ Projeto desenvolvido em NestJs, utilizando o Atlas do MongoDB, para persistênci
 ## Installation & Running the app
 
 ```bash
-# For all is need API_KEY to access: **CHAVE_SECRETA**
-
-# development
-$ yarn run start
-
-# watch mode
-$ yarn run start:dev
+# Is need API_KEY to access: CHAVE_SECRETA
 
 # production mode
-$ yarn run start:prod
+$ sudo docker-compose up  --build
 ```
 
 ## Tests / GET & PUT
