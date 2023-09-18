@@ -29,11 +29,17 @@ Projeto desenvolvido em NestJs, utilizando o Atlas do MongoDB, para persistênci
 ## Installation & Running the app
 
 ```bash
-# local host
-$ docker-compose up --build
+# development
+$ yarn run start
+
+# watch mode
+$ yarn run start:dev
+
+# production mode
+$ yarn run start:prod
 ```
 
-## Unit Test / GET & PUT
+## Tests / GET & PUT
 
 ```bash
 # unit tests
@@ -55,10 +61,7 @@ $ yarn run test:cov
 8. Preparei os métodos para atualizar e configurei o CRON da aplicação.
 9. Criada collection para salvar quando os processos da aplicação acontecem e métodos para salvar o horário do CRON e refatoração do endpoint de estado da api para trazer a informação do horpario do último CRON
 10. Testes automatizados do controller interaginsdo com o service, mockando todas as interações com o banco de dados.
-
-//FALTA
-API KEY
-PREPARAR DOCKER-COMPOSE PARA PRODUÇAO
+11. Configuração de um sistema de api key.
 
 ## License
 

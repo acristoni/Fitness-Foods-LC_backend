@@ -1,10 +1,11 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Product, ProductSchema } from './models/products.schema';
 import { ConfigModule } from '@nestjs/config';
 import { Process, ProcessSchema } from './models/process.schema copy';
+import { AuthMiddleware } from './auth.middleware';
 
 @Module({
   imports: [
@@ -22,4 +23,8 @@ import { Process, ProcessSchema } from './models/process.schema copy';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes('*');
+  }
+}

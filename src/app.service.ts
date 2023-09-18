@@ -185,7 +185,6 @@ export class AppService {
 
             if (time >= 100) {
               gzipStream.destroy();
-              console.log('Reached time limit');
               resolve(nutritionFacts);
             }
           });
@@ -250,10 +249,6 @@ export class AppService {
 
     const appMemory =
       memoryUsage.heapTotal + memoryUsage.external + memoryUsage.arrayBuffers;
-    console.log(
-      '🚀 ~ file: app.service.ts:297 ~ getHello ~ appMemory:',
-      appMemory,
-    );
 
     const toMB = (bytes) => (bytes / 1024 / 1024).toFixed(2);
 

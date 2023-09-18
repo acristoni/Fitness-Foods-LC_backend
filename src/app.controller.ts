@@ -8,11 +8,12 @@ import {
   Query,
 } from '@nestjs/common';
 import { AppService } from './app.service';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Product } from './models/products.schema';
 import { UpdateProductDto } from './dto/update-product.dto';
 
 @ApiTags('Alimentos')
+@ApiBearerAuth()
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}

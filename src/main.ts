@@ -10,6 +10,7 @@ async function bootstrap() {
     .setDescription('API com dados alimenticios')
     .setVersion('1.0')
     .addTag('Alimentos')
+    .addBearerAuth({ type: 'apiKey', in: 'header', name: 'API_KEY' })
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
