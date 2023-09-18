@@ -55,6 +55,7 @@ $ yarn run test:cov
 8. Preparei os métodos para atualizar e configurei o CRON da aplicação.
 9. Criada collection para salvar quando os processos da aplicação acontecem e métodos para salvar o horário do CRON e refatoração do endpoint de estado da api para trazer a informação do horpario do último CRON
 10. Teste GET na raiz.
+11. Teste GET todos os produtos, paginados.
 
 //FALTA
 TESTE UNI PUT AND GET

@@ -26,11 +26,6 @@ export class AppController {
     return await this.appService.getHello();
   }
 
-  @Get('importar')
-  async importDataFromUrl() {
-    return await this.appService.importAllLists();
-  }
-
   @Get('products')
   @ApiOperation({
     summary: 'Listar todos os produtos da base de dados, com paginação',

@@ -66,7 +66,8 @@ export class AppService {
     }
 
     const skip = (page - 1) * limit;
-    const totalProducts = await this.productModel.countDocuments().exec();
+    const totalProducts = await this.productModel.countDocuments();
+
     const products = await this.productModel
       .find()
       .skip(skip)
@@ -204,29 +205,6 @@ export class AppService {
     });
   }
 
-  async saveProductsFromList(listNumber: number): Promise<string> {
-    let string = '';
-    const array = await this.importData(listNumber);
-    array.forEach((line) => {
-      string = string + line;
-    });
-    const arrayStrings = string.split('}');
-    const arrayObj: ProductDTO[] = [];
-    for (let i = 0; i < 100; i++) {
-      const facts = arrayStrings[i];
-      const factsObj = JSON.parse(facts + '}');
-      arrayObj.push(factsObj);
-    }
-
-    const promises = arrayObj.map(async (productInfo: ProductDTO) => {
-      return await this.createProduct(productInfo);
-    });
-
-    await Promise.all(promises);
-
-    return `Produtos da lista 0${listNumber} salvos com sucesso`;
-  }
-
   async updateProductsFromList(listNumber: number): Promise<string> {
     let string = '';
     const array = await this.importData(listNumber);
@@ -248,18 +226,6 @@ export class AppService {
     await Promise.all(promises);
 
     return `Produtos da lista 0${listNumber} atualizados com sucesso`;
-  }
-
-  async importAllLists() {
-    const arrayListsNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-    const promises = arrayListsNumbers.map(async (listNumber: number) => {
-      return await this.saveProductsFromList(listNumber);
-    });
-
-    const arraySuccessMessage = await Promise.all(promises);
-
-    return arraySuccessMessage;
   }
 
   async updateAllLists() {
