@@ -29,6 +29,8 @@ Projeto desenvolvido em NestJs, utilizando o Atlas do MongoDB, para persistênci
 ## Installation & Running the app
 
 ```bash
+# For all is need API_KEY to access: **CHAVE_SECRETA**
+
 # development
 $ yarn run start
 
